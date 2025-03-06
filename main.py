@@ -10,4 +10,4 @@ def webhook():
     return "Received data successfully", 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)  # Cloud Run expects the app to listen on port 8080
+    app.run(debug=True, host='0.0.0.0', port=8080)  # Cloud Run expects the app to listen on port 8080
