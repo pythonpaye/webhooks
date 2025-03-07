@@ -2,13 +2,14 @@ from flask import Flask, request
 import json
 import os
 import requests
+from datetime import datetime
 
 app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()  # Get the incoming JSON data
-    print(f"Received request body: {json.dumps(data)}")  # Log the payload
+    # print(f"Received request body: {json.dumps(data)}")
 
     # Extract the "Community Checkbox" value
     community_checkbox_info = data.get('Community Checkbox', {})
@@ -27,6 +28,16 @@ def webhook():
         surname_info = data.get('Primary Member Last Name', {})
         surname = surname_info.get('value')
 
+        # Birthday
+        birthday_info = data.get('Birthday', {})
+        birthday = birthday_info.get('value')
+        date_obj = datetime.strptime(birthday, "%b %d, %Y")
+        birthday_formatted = date_obj.strftime("%Y-%m-%d")
+
+        # City
+        city_info = data.get('City', {})
+        city = city_info.get('value')
+
         if phone_number:
             # Define the API endpoint
             url = f'https://api.community.com/webhooks/v1/community/f1590556-33c9-46ba-a565-16eca1a1ef28/subscription_create'
@@ -42,7 +53,9 @@ def webhook():
                 'communication_channel': 'sms',
                 'phone_number': phone_number,
                 'given_name': given_name,
-                'surname': surname
+                'surname': surname,
+                'date_of_birth': birthday_formatted,
+                'city': city
             }
 
             # Send the POST request
