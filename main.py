@@ -11,14 +11,17 @@ def webhook():
     print(f"Received request body: {json.dumps(data)}")  # Log the payload
 
     # Extract the "Community Checkbox" value
-    community_checkbox = data.get('Community Checkbox', {}).get('value', [])
+    community_checkbox_info = data.get('Community Checkbox', {})
+    community_checkbox_value = community_checkbox_info.get('value')
 
-    # Check if "Community Checkbox" contains '1'
-    if '1' in community_checkbox:
+    # Check if the "Community Checkbox" value is '1'
+    if community_checkbox_value == ['1']:
         # Extract the data fields from the incoming data
+        # Phone Number
         phone_info = data.get('Phone', {})
         phone_number = phone_info.get('value')
 
+        # Name
         given_name_info = data.get('Primary Member First Name', {})
         given_name = given_name_info.get('value')
         surname_info = data.get('Primary Member Last Name', {})
@@ -52,7 +55,7 @@ def webhook():
         else:
             print('Phone number not found in the request data.')
     else:
-        print('Community Checkbox is not set to 1; data will not be sent to Community API.')
+        print('Community Checkbox is not checked or not present.')
 
     return "Processed request", 200
 
