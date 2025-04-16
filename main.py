@@ -12,7 +12,7 @@ def webhook():
     # print(f"Received request body: {json.dumps(data)}")
 
     # Extract the "Community Checkbox" value
-    community_checkbox_info = data.get('Community Checkbox', {})
+    community_checkbox_info = data.get('Subscribe to our Arizona Cardinals general text line to get real-time game day updates, special offers, and more!', {})
     community_checkbox_value = community_checkbox_info.get('value')
 
     # Check if the "Community Checkbox" value is '1'
@@ -23,13 +23,13 @@ def webhook():
         phone_number = phone_info.get('value')
 
         # Name
-        given_name_info = data.get('Primary Member First Name', {})
+        given_name_info = data.get('First Name', {})
         given_name = given_name_info.get('value')
-        surname_info = data.get('Primary Member Last Name', {})
+        surname_info = data.get('Last Name', {})
         surname = surname_info.get('value')
 
         # Birthday
-        birthday_info = data.get('Birthday', {})
+        birthday_info = data.get('Date of Birth', {})
         birthday = birthday_info.get('value')
         date_obj = datetime.strptime(birthday, "%b %d, %Y")
         birthday_formatted = date_obj.strftime("%Y-%m-%d")
